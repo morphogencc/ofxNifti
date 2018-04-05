@@ -12,28 +12,25 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
-    <Filter Include="blocks">
-      <UniqueIdentifier>{c52df3c9-9388-464a-9933-b51a155efb39}</UniqueIdentifier>
+    <Filter Include="ofxNifti">
+      <UniqueIdentifier>{3cb224db-c1e7-4a98-be86-f6b4d8134bfb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="blocks\nifti-cpp">
-      <UniqueIdentifier>{17932d88-20e2-4098-9909-f8da6055dc9c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="blocks\nifti-cpp\src">
-      <UniqueIdentifier>{a3fa7707-cb91-457a-a5ac-083ded26263a}</UniqueIdentifier>
+    <Filter Include="ofxNifti\src">
+      <UniqueIdentifier>{cf4372c6-ce28-4037-befb-8eda1a992c0c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\niftiExampleApp.cpp">
+    <ClCompile Include="..\src\exampleDisplayNiftiApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\niftiExampleApp.cpp">
+    <ClCompile Include="..\src\exampleDisplayNiftiApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClCompile Include="..\..\src\NiftiImage.cpp">
-      <Filter>blocks\nifti-cpp\src</Filter>
+      <Filter>ofxNifti\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -41,7 +38,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\NiftiImage.h">
-      <Filter>blocks\nifti-cpp\src</Filter>
+      <Filter>ofxNifti\src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

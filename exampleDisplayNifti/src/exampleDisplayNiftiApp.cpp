@@ -7,9 +7,8 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-class niftiExampleApp : public App {
-  public:
-	void setup() override;
+class exampleDisplayNiftiApp : public App {
+  void setup() override;
 	void mouseDown( MouseEvent event ) override;
 	void update() override;
 	void draw() override;
@@ -21,9 +20,9 @@ class niftiExampleApp : public App {
 	int mSliceZ;
 };
 
-void niftiExampleApp::setup()
+void exampleDisplayNiftiApp::setup()
 {
-	mSliceZ = 0;
+  mSliceZ = 0;
 	mMRI = std::make_shared<NiftiImage>();
 	mMRI->open(app::getAssetPath("sub-001_T1w.nii").string().c_str(), NiftiImage::NIFTIIMAGE_MODES::NIFTI_READ);
 
@@ -36,11 +35,27 @@ void niftiExampleApp::setup()
 	createImage();
 }
 
-void niftiExampleApp::mouseDown( MouseEvent event )
+void exampleDisplayNiftiApp::mouseDown( MouseEvent event )
 {
 }
 
-void niftiExampleApp::createImage() {
+void exampleDisplayNiftiApp::keyDown(KeyEvent event) {
+	if (event.getCode() == KeyEvent::KEY_UP) {
+		mSliceZ++;
+	}
+	else if (event.getCode() == KeyEvent::KEY_DOWN) {
+		mSliceZ--;
+	}
+	if (mSliceZ < 0) {
+		mSliceZ = 0;
+	}
+	if (mSliceZ > 255) {
+		mSliceZ = 255;
+	}
+	createImage();
+}
+
+void exampleDisplayNiftiApp::createImage() {
 	std::printf("Slicing image along z = %d", mSliceZ);
 	uint8_t* data = mMRI->readSubvolume<uint8_t>(mSliceZ, 0, 0, 0, mSliceZ, mMRI->ny(), mMRI->nz(), 0);
 	std::vector<uint8_t> vec(*data, 320*320);
@@ -58,31 +73,15 @@ void niftiExampleApp::createImage() {
 	}
 }
 
-void niftiExampleApp::update()
+void exampleDisplayNiftiApp::update()
 {
 }
 
-void niftiExampleApp::draw()
+void exampleDisplayNiftiApp::draw()
 {
-	gl::clear( Color( 0, 0, 0 ) ); 
-	gl::TextureRef texture = gl::Texture::create(mSurface);
-	gl::draw(texture);
+  gl::clear( Color( 0, 0, 0 ) );
+  gl::TextureRef texture = gl::Texture::create(mSurface);
+  gl::draw(texture);
 }
 
-void niftiExampleApp::keyDown(KeyEvent event) {
-	if (event.getCode() == KeyEvent::KEY_UP) {
-		mSliceZ++;
-	}
-	else if (event.getCode() == KeyEvent::KEY_DOWN) {
-		mSliceZ--;
-	}
-	if (mSliceZ < 0) {
-		mSliceZ = 0;
-	}
-	if (mSliceZ > 255) {
-		mSliceZ = 255;
-	}
-	createImage();
-}
-
-CINDER_APP( niftiExampleApp, RendererGl, [=](cinder::app::App::Settings* settings) {settings->setConsoleWindowEnabled(); })
+CINDER_APP(exampleDisplayNiftiApp, RendererGl, [=](cinder::app::App::Settings* settings) { settings->setConsoleWindowEnabled(); })
