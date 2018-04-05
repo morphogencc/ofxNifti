@@ -22,7 +22,7 @@ class exampleDisplayNiftiApp : public App {
 
 void exampleDisplayNiftiApp::setup()
 {
-  mSliceZ = 0;
+	mSliceZ = 0;
 	mMRI = std::make_shared<NiftiImage>();
 	mMRI->open(app::getAssetPath("sub-001_T1w.nii").string().c_str(), NiftiImage::NIFTIIMAGE_MODES::NIFTI_READ);
 
@@ -57,18 +57,21 @@ void exampleDisplayNiftiApp::keyDown(KeyEvent event) {
 
 void exampleDisplayNiftiApp::createImage() {
 	std::printf("Slicing image along z = %d", mSliceZ);
-	uint8_t* data = mMRI->readSubvolume<uint8_t>(mSliceZ, 0, 0, 0, mSliceZ, mMRI->ny(), mMRI->nz(), 0);
-	std::vector<uint8_t> vec(*data, 320*320);
-	/*
-	for (int i = 0; i < mMRI->nz() * mMRI->ny(); i++) {
-	std::printf("Intensity: %d", data[i]);
-	}
-	*/
+	//uint8_t* data = mMRI->readSubvolume<uint8_t>(mSliceZ, 0, 0, 0, mSliceZ, mMRI->ny(), mMRI->nz(), 0);
+	uint8_t* data = mMRI->readVolume<uint8_t>(128);
+	size_t dataLength = 320 * 320;
+	std::vector<uint8_t> vec(data, data + dataLength);
 	mSurface = ci::Surface8u(mMRI->nz(), mMRI->ny(), false, cinder::SurfaceChannelOrder(cinder::SurfaceChannelOrder::RGBA));
 	for (int j = 0; j < mMRI->ny(); j++) {
 		for (int i = 0; i < mMRI->nz(); i++) {
 			char c = data[i + j * mMRI->nz()];
 			mSurface.setPixel(glm::ivec2(i, j), ci::ColorT<uint8_t>(c, c, c));
+		}
+	}
+	for (int j = 0; j < mMRI->ny(); j++) {
+		for (int i = 0; i < mMRI->nz(); i++) {
+			int index = i + j * mMRI->nz();
+			std::printf("NIFTI Intensity: %d \t Surface Value: %d\n", data[index], mSurface.getPixel(glm::ivec2(i,j)).r);
 		}
 	}
 }
